@@ -31,7 +31,7 @@ cp .env.example .env
 python main.py
 ```
 
-Type your problem in plain English at the prompt. Type `exit` or `quit` to close.
+Type your issue in plain English at the `Describe your issue:` prompt. Type `exit` or `quit` to close.
 
 ## Example
 
