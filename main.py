@@ -87,7 +87,7 @@ def main():
 
     while True:
         try:
-            problem = Prompt.ask("\n[bold cyan]Problem[/bold cyan]").strip()
+            problem = Prompt.ask("\n[bold cyan]>[/bold cyan]").strip()
         except (KeyboardInterrupt, EOFError):
             console.print("\n[dim]Bye.[/dim]")
             break
