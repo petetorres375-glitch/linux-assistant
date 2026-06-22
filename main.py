@@ -48,7 +48,7 @@ def ask(problem: str) -> dict:
 
     with console.status("Thinking...", spinner="dots"):
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             contents=f"{SYSTEM_PROMPT}\n\nProblem: {problem}",
         )
 
