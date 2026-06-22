@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
 """linux_assistant — Describe a Linux problem, get the command, explanation, and warnings."""
 
-import json
 import logging
-import os
 import sys
-from datetime import datetime
 from pathlib import Path
 
-from google import genai
-from google.genai import errors as genai_errors
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
+
+from ai import ask
 
 load_dotenv()
 
@@ -28,48 +25,6 @@ logging.basicConfig(
 
 console = Console()
 
-SYSTEM_PROMPT = """\
-You are a Linux command-line expert. The user will describe a problem or task in plain English.
-Return a JSON object with exactly these three keys:
-- "command": The recommended Linux command or sequence of commands (as a string).
-- "explanation": A plain-English explanation of what the command does and why it works.
-- "warnings": A list of cautions or side effects the user should know. If none, return ["None."].
-
-Return only valid JSON. No markdown fences, no extra text.
-"""
-
-
-def ask(problem: str) -> dict:
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        console.print("[red]GEMINI_API_KEY not set in .env[/red]")
-        sys.exit(1)
-
-    client = genai.Client(api_key=api_key)
-
-    models = ["gemini-2.5-flash", "gemini-2.5-flash-lite"]
-    response = None
-    for model in models:
-        try:
-            with console.status(f"Thinking with {model}...", spinner="dots"):
-                response = client.models.generate_content(
-                    model=model,
-                    contents=f"{SYSTEM_PROMPT}\n\nProblem: {problem}",
-                )
-            break
-        except genai_errors.ServerError as e:
-            if "503" in str(e) and model != models[-1]:
-                console.print(f"[yellow]{model} unavailable, retrying with {models[models.index(model) + 1]}...[/yellow]")
-            else:
-                console.print(f"[red]API error: {e}[/red]")
-                sys.exit(1)
-
-    raw = response.text.strip()
-    if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-
-    return json.loads(raw)
-
 
 def display(result: dict) -> None:
     console.print(Panel(
@@ -82,8 +37,7 @@ def display(result: dict) -> None:
         title="[bold]Explanation[/bold]",
         border_style="cyan",
     ))
-    warnings = result.get("warnings", [])
-    warning_text = "\n".join(f"• {w}" for w in warnings)
+    warning_text = "\n".join(f"• {w}" for w in result.get("warnings", []))
     console.print(Panel(
         warning_text,
         title="[bold]Warnings[/bold]",

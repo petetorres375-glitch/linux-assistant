@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux Assistant</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #58a6ff;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      color: #8b949e;
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .search-box {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #e6edf3;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: #58a6ff;
+    }
+
+    .search-box button {
+      padding: 0.75rem 1.5rem;
+      background: #238636;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .search-box button:hover {
+      background: #2ea043;
+    }
+
+    .results {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .panel {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #30363d;
+    }
+
+    .panel-header {
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .panel-body {
+      padding: 1rem;
+      background: #161b22;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .panel.command .panel-header  { background: #1a3a1a; color: #3fb950; }
+    .panel.command .panel-body    { color: #3fb950; font-size: 1.05rem; font-weight: bold; }
+
+    .panel.explanation .panel-header { background: #0d2a40; color: #58a6ff; }
+    .panel.explanation .panel-body   { color: #c9d1d9; }
+
+    .panel.warnings .panel-header { background: #3a2a0a; color: #d29922; }
+    .panel.warnings .panel-body   { color: #c9d1d9; }
+
+    .error {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1rem;
+      background: #3a1a1a;
+      border: 1px solid #f85149;
+      border-radius: 6px;
+      color: #f85149;
+    }
+
+    .prompt-label {
+      max-width: 700px;
+      margin: 0 auto 0.5rem;
+      color: #8b949e;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Linux Assistant</h1>
+    <p>Describe a Linux problem in plain English.</p>
+  </header>
+
+  <form method="POST">
+    <div class="search-box">
+      <input
+        type="text"
+        name="problem"
+        placeholder="e.g. Find all files larger than 100MB on my system"
+        value="{{ problem }}"
+        autofocus
+      >
+      <button type="submit">Ask</button>
+    </div>
+  </form>
+
+  {% if error %}
+    <div class="error">Error: {{ error }}</div>
+  {% endif %}
+
+  {% if result %}
+    <div class="results">
+
+      <div class="panel command">
+        <div class="panel-header">Command</div>
+        <div class="panel-body">{{ result.command }}</div>
+      </div>
+
+      <div class="panel explanation">
+        <div class="panel-header">Explanation</div>
+        <div class="panel-body">{{ result.explanation }}</div>
+      </div>
+
+      <div class="panel warnings">
+        <div class="panel-header">Warnings</div>
+        <div class="panel-body">{% for w in result.warnings %}• {{ w }}
+{% endfor %}</div>
+      </div>
+
+    </div>
+  {% endif %}
+
+</body>
+</html>
