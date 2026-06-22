@@ -35,7 +35,13 @@ def index():
                 result = ask(problem)
                 logging.info("WEB Q: %s | CMD: %s", problem, result.get("command", ""))
             except Exception as e:
-                error = str(e)
+                msg = str(e)
+                if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
+                    error = "Daily request limit reached. Try again tomorrow."
+                elif "503" in msg or "UNAVAILABLE" in msg:
+                    error = "The AI model is temporarily unavailable. Try again in a moment."
+                else:
+                    error = "Something went wrong. Please try again."
 
     return render_template("index.html", problem=problem, result=result, error=error)
 
