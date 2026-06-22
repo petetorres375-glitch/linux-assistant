@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 from google import genai
+from google.genai import errors as genai_errors
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
@@ -46,11 +47,22 @@ def ask(problem: str) -> dict:
 
     client = genai.Client(api_key=api_key)
 
-    with console.status("Thinking...", spinner="dots"):
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=f"{SYSTEM_PROMPT}\n\nProblem: {problem}",
-        )
+    models = ["gemini-2.5-flash", "gemini-2.5-flash-lite"]
+    response = None
+    for model in models:
+        try:
+            with console.status(f"Thinking with {model}...", spinner="dots"):
+                response = client.models.generate_content(
+                    model=model,
+                    contents=f"{SYSTEM_PROMPT}\n\nProblem: {problem}",
+                )
+            break
+        except genai_errors.ServerError as e:
+            if "503" in str(e) and model != models[-1]:
+                console.print(f"[yellow]{model} unavailable, retrying with {models[models.index(model) + 1]}...[/yellow]")
+            else:
+                console.print(f"[red]API error: {e}[/red]")
+                sys.exit(1)
 
     raw = response.text.strip()
     if raw.startswith("```"):
