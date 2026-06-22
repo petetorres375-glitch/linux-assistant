@@ -86,6 +86,38 @@
 
     .search-box button:hover { opacity: 0.9; }
     .search-box button:active { transform: scale(0.98); }
+    .search-box button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto 1.5rem;
+      align-items: center;
+      gap: 0.75rem;
+      color: #8b949e;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .spinner.active { display: flex; }
+
+    .spinner-ring {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #21262d;
+      border-top-color: #58a6ff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
     .results {
       max-width: 720px;
@@ -200,7 +232,7 @@
     <p>Describe a problem in plain English — get the command.</p>
   </header>
 
-  <form method="POST">
+  <form method="POST" id="ask-form">
     <div class="search-box">
       <input
         type="text"
@@ -209,9 +241,24 @@
         value="{{ problem }}"
         autofocus
       >
-      <button type="submit">Ask</button>
+      <button type="submit" id="ask-btn">Ask</button>
     </div>
   </form>
+
+  <div class="spinner" id="spinner">
+    <div class="spinner-ring"></div>
+    <span>Thinking...</span>
+  </div>
+
+  <script>
+    document.getElementById('ask-form').addEventListener('submit', function () {
+      const btn = document.getElementById('ask-btn');
+      const spinner = document.getElementById('spinner');
+      btn.disabled = true;
+      btn.textContent = 'Asking...';
+      spinner.classList.add('active');
+    });
+  </script>
 
   {% if error %}
     <div class="error">{{ error }}</div>
