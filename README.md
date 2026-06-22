@@ -45,6 +45,10 @@ Warnings:  • -delete is permanent. There is no undo.
            • Test first with -print instead of -delete to preview matches.
 ```
 
+## Model
+
+Uses `gemini-2.5-flash` as the primary model. Automatically falls back to `gemini-2.5-flash-lite` on a 503 (model overload) before giving up.
+
 ## Logs
 
 All queries and returned commands are saved to `logs/queries.log`.
