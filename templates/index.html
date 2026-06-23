@@ -3,60 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Linux Assistant</title>
+  <title>Linux Assistant — Torres Tech Remote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #0a0e17;
-      color: #e6edf3;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #111111;
       min-height: 100vh;
-      padding: 2.5rem 1rem;
     }
 
+    /* ── Header ── */
     header {
-      text-align: center;
-      margin-bottom: 2.5rem;
+      background: #111111;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #58a6ff, #3fb950, #58a6ff);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shimmer 4s linear infinite;
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 0.45rem;
+      flex-wrap: wrap;
     }
 
-    @keyframes shimmer {
-      to { background-position: 200% center; }
+    .brand-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
     }
 
-    header p {
-      color: #6e7681;
-      margin-top: 0.5rem;
+    .brand-accent {
+      color: #FF6B00;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 1.1rem;
+      background: #333333;
+      flex-shrink: 0;
+    }
+
+    .tool-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #888888;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Main content ── */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem 3rem;
+    }
+
+    .page-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #111111;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-title span {
+      color: #FF6B00;
+    }
+
+    .page-subtitle {
+      color: #666666;
       font-size: 0.95rem;
-      letter-spacing: 1px;
+      margin-bottom: 2rem;
     }
 
+    /* ── Search form ── */
     .search-box {
-      max-width: 720px;
-      margin: 0 auto 2.5rem;
       display: flex;
       gap: 0.6rem;
+      margin-bottom: 2rem;
     }
 
     .search-box input {
       flex: 1;
-      padding: 0.85rem 1.2rem;
-      background: #161b22;
-      border: 1px solid #21262d;
+      padding: 0.85rem 1.1rem;
+      background: #ffffff;
+      border: 1.5px solid #dddddd;
       border-radius: 8px;
-      color: #e6edf3;
+      color: #111111;
       font-family: inherit;
       font-size: 1rem;
       outline: none;
@@ -64,52 +103,52 @@
     }
 
     .search-box input:focus {
-      border-color: #58a6ff;
-      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.12);
+      border-color: #FF6B00;
+      box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12);
     }
 
-    .search-box input::placeholder { color: #484f58; }
+    .search-box input::placeholder { color: #aaaaaa; }
 
     .search-box button {
-      padding: 0.85rem 1.6rem;
-      background: linear-gradient(135deg, #238636, #2ea043);
+      padding: 0.85rem 1.7rem;
+      background: #FF6B00;
       border: none;
       border-radius: 8px;
-      color: #fff;
+      color: #ffffff;
       font-family: inherit;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: opacity 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .search-box button:hover { opacity: 0.9; }
+    .search-box button:hover { background: #e05e00; }
     .search-box button:active { transform: scale(0.98); }
     .search-box button:disabled {
-      opacity: 0.6;
+      background: #ffaa66;
       cursor: not-allowed;
       transform: none;
     }
 
+    /* ── Spinner ── */
     .spinner {
       display: none;
-      max-width: 720px;
-      margin: 0 auto 1.5rem;
       align-items: center;
-      gap: 0.75rem;
-      color: #8b949e;
+      gap: 0.65rem;
+      color: #888888;
       font-size: 0.9rem;
-      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
     }
 
     .spinner.active { display: flex; }
 
     .spinner-ring {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #21262d;
-      border-top-color: #58a6ff;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #dddddd;
+      border-top-color: #FF6B00;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       flex-shrink: 0;
@@ -119,9 +158,32 @@
       to { transform: rotate(360deg); }
     }
 
+    /* ── Error ── */
+    .error {
+      padding: 1rem 1.2rem;
+      background: #fff5f5;
+      border: 1.5px solid #e53e3e;
+      border-radius: 8px;
+      color: #c53030;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Query label ── */
+    .query-label {
+      color: #888888;
+      font-size: 0.82rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .query-label span {
+      color: #444444;
+      font-style: italic;
+    }
+
+    /* ── Result cards ── */
     .results {
-      max-width: 720px;
-      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -134,158 +196,184 @@
     }
 
     .panel {
+      background: #ffffff;
       border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
       overflow: hidden;
-      border: 1px solid #21262d;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+      border: 1px solid #eeeeee;
     }
 
     .panel-header {
-      padding: 0.55rem 1.1rem;
-      font-size: 0.75rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
+      background: #fafafa;
+      border-bottom: 1px solid #eeeeee;
     }
 
     .panel-header::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
     }
 
     .panel-body {
       padding: 1.1rem 1.2rem;
-      background: #0d1117;
       font-size: 0.95rem;
-      line-height: 1.7;
+      line-height: 1.75;
       white-space: pre-wrap;
       word-break: break-word;
     }
 
-    .panel.command .panel-header {
-      background: #0f2a0f;
-      color: #3fb950;
+    /* Command — green */
+    .panel.command {
+      border-left: 4px solid #22863a;
     }
-    .panel.command .panel-header::before { background: #3fb950; }
+
+    .panel.command .panel-header {
+      color: #22863a;
+    }
+
+    .panel.command .panel-header::before { background: #22863a; }
+
     .panel.command .panel-body {
-      color: #3fb950;
       font-family: 'Courier New', monospace;
-      font-size: 1.05rem;
-      font-weight: bold;
-      background: #0b1a0b;
-      border-left: 3px solid #3fb950;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a5c2a;
+      background: #f6fff8;
+    }
+
+    /* Explanation — blue */
+    .panel.explanation {
+      border-left: 4px solid #0366d6;
     }
 
     .panel.explanation .panel-header {
-      background: #0d1f38;
-      color: #58a6ff;
+      color: #0366d6;
     }
-    .panel.explanation .panel-header::before { background: #58a6ff; }
+
+    .panel.explanation .panel-header::before { background: #0366d6; }
+
     .panel.explanation .panel-body {
-      border-left: 3px solid #1f3a5f;
+      color: #111111;
+    }
+
+    /* Warnings — amber */
+    .panel.warnings {
+      border-left: 4px solid #b08800;
     }
 
     .panel.warnings .panel-header {
-      background: #2a1f08;
-      color: #d29922;
+      color: #9a7700;
     }
-    .panel.warnings .panel-header::before { background: #d29922; }
+
+    .panel.warnings .panel-header::before { background: #b08800; }
+
     .panel.warnings .panel-body {
-      border-left: 3px solid #4a3510;
+      color: #4a3c00;
     }
 
-    .error {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 1rem 1.2rem;
-      background: #1a0d0d;
-      border: 1px solid #f85149;
-      border-radius: 8px;
-      color: #f85149;
-      font-size: 0.95rem;
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: #aaaaaa;
+      font-size: 0.8rem;
+      border-top: 1px solid #e5e5e5;
+      margin-top: 2rem;
     }
 
-    .query-label {
-      max-width: 720px;
-      margin: 0 auto 0.75rem;
-      color: #484f58;
-      font-size: 0.82rem;
-      letter-spacing: 1px;
-    }
+    footer span { color: #FF6B00; font-weight: 600; }
 
-    .query-label span {
-      color: #8b949e;
-      font-style: italic;
+    /* ── Mobile ── */
+    @media (max-width: 520px) {
+      .search-box { flex-direction: column; }
+      .search-box button { width: 100%; }
+      .page-title { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Linux Assistant</h1>
-    <p>Describe a problem in plain English — get the command.</p>
+    <div class="brand">
+      <span class="brand-name">Torres<span class="brand-accent">Tech</span> Remote</span>
+      <div class="brand-divider"></div>
+      <span class="tool-name">Linux Assistant</span>
+    </div>
   </header>
 
-  <form method="POST" id="ask-form">
-    <div class="search-box">
-      <input
-        type="text"
-        name="problem"
-        placeholder="e.g. Find all files larger than 100MB on my system"
-        value="{{ problem }}"
-        autofocus
-      >
-      <button type="submit" id="ask-btn">Ask</button>
+  <main>
+    <h1 class="page-title">Linux <span>Assistant</span></h1>
+    <p class="page-subtitle">Describe a problem in plain English — get the command, explanation, and warnings.</p>
+
+    <form method="POST" id="ask-form">
+      <div class="search-box">
+        <input
+          type="text"
+          name="problem"
+          placeholder="e.g. Find all files larger than 100MB on my system"
+          value="{{ problem }}"
+          autofocus
+        >
+        <button type="submit" id="ask-btn">Ask</button>
+      </div>
+    </form>
+
+    <div class="spinner" id="spinner">
+      <div class="spinner-ring"></div>
+      <span>Thinking...</span>
     </div>
-  </form>
 
-  <div class="spinner" id="spinner">
-    <div class="spinner-ring"></div>
-    <span>Thinking...</span>
-  </div>
+    <script>
+      document.getElementById('ask-form').addEventListener('submit', function () {
+        const btn = document.getElementById('ask-btn');
+        const spinner = document.getElementById('spinner');
+        btn.disabled = true;
+        btn.textContent = 'Asking...';
+        spinner.classList.add('active');
+      });
+    </script>
 
-  <script>
-    document.getElementById('ask-form').addEventListener('submit', function () {
-      const btn = document.getElementById('ask-btn');
-      const spinner = document.getElementById('spinner');
-      btn.disabled = true;
-      btn.textContent = 'Asking...';
-      spinner.classList.add('active');
-    });
-  </script>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
 
-  {% if error %}
-    <div class="error">{{ error }}</div>
-  {% endif %}
+    {% if result %}
+      <div class="query-label">Results for: <span>{{ problem }}</span></div>
+      <div class="results">
 
-  {% if result %}
-    <div class="query-label">Results for: <span>{{ problem }}</span></div>
-    <div class="results">
+        <div class="panel command">
+          <div class="panel-header">Command</div>
+          <div class="panel-body">{{ result.command }}</div>
+        </div>
 
-      <div class="panel command">
-        <div class="panel-header">Command</div>
-        <div class="panel-body">{{ result.command }}</div>
-      </div>
+        <div class="panel explanation">
+          <div class="panel-header">Explanation</div>
+          <div class="panel-body">{{ result.explanation }}</div>
+        </div>
 
-      <div class="panel explanation">
-        <div class="panel-header">Explanation</div>
-        <div class="panel-body">{{ result.explanation }}</div>
-      </div>
-
-      <div class="panel warnings">
-        <div class="panel-header">Warnings</div>
-        <div class="panel-body">{% for w in result.warnings %}• {{ w }}
+        <div class="panel warnings">
+          <div class="panel-header">Warnings</div>
+          <div class="panel-body">{% for w in result.warnings %}• {{ w }}
 {% endfor %}</div>
-      </div>
+        </div>
 
-    </div>
-  {% endif %}
+      </div>
+    {% endif %}
+  </main>
+
+  <footer>
+    &copy; 2026 <span>Torres Tech Remote</span> — All rights reserved.
+  </footer>
 
 </body>
 </html>
