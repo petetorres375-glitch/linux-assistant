@@ -1,6 +1,6 @@
 # linux_assistant
 
-A Python CLI tool that takes a Linux problem described in plain English and returns the recommended command, an explanation of what it does, and any warnings to be aware of.
+A Python tool that takes a Linux problem described in plain English and returns the recommended command, an explanation of what it does, and any warnings to be aware of. Runs as a web app or from the command line.
 
 ## Output
 
@@ -27,11 +27,21 @@ cp .env.example .env
 
 ## Usage
 
+**Web app:**
+
+```bash
+python app.py
+```
+
+Open `http://localhost:5051`, describe your problem, and get results in the browser.
+
+**CLI:**
+
 ```bash
 python main.py
 ```
 
-Type your issue in plain English at the `Describe your issue:` prompt. Type `exit` or `quit` to close.
+Type your issue in plain English at the prompt. Type `exit` or `quit` to close.
 
 ## Example
 
@@ -52,3 +62,14 @@ Uses `gemini-2.5-flash` as the primary model. Automatically falls back to `gemin
 ## Logs
 
 All queries and returned commands are saved to `logs/queries.log`.
+
+## Live Demo
+
+[https://web-production-58a9b.up.railway.app/](https://web-production-58a9b.up.railway.app/)
+
+## Deploy to Railway
+
+1. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
+2. Select this repository
+3. Add environment variables: `GEMINI_API_KEY` and `SECRET_KEY`
+4. Railway detects the `Procfile` and deploys automatically
